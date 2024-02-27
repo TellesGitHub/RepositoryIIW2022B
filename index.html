@@ -17,6 +17,30 @@
         </form>
     </div>
 
-    <script src="js/script.js"></script>
+    <script>
+        function obterInformaticoesCEP() {
+    const cep = document.querySelector(".cepSelecionado").value;
+    const url = `https://viacep.com.br/ws/${cep}/json/`;
+    alert(url);
+    fetch(url)
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                alert("Deu erro man");
+            }
+        })
+
+        .then(data => {
+            console.log("Deu bom!");
+            alert(JSON.stringify(data));
+        })
+
+        .catch(error => {
+            console.error("Deu erro man!");
+        })
+}
+
+    </script>
 </body>
 </html>

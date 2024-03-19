@@ -1,46 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <title>Formulário HTML</title>
+    <title>CNPJ HACKER</title>
+    <style>
+        body {
+            text-align: center;
+        }
+    </style>
 </head>
+
 <body>
 
     <div class="container">
-        <img src="https://w.forfun.com/fetch/c4/c4f17473b741b1f7fec7d11dee6d6c3d.jpeg" alt="">
         <form action="">
-            <h1>Formulário HTML</h1>
-            <input type="text" placeholder="CEP" class="cepSelecionado">
-            <input type="button" value="Button" onclick="obterInformaticoesCEP()">
+            <h1>Search your cnpj</h1>
+            <input type="text" placeholder="Write your CNPJ here" class="cnpjSelecionado">
+            <input type="button" value="Button" onclick="obterInformacoesCNPJ()">
         </form>
     </div>
-
+    <div id="cnpjInfo"></div>
     <script>
-        function obterInformaticoesCEP() {
-    const cep = document.querySelector(".cepSelecionado").value;
-    const url = `https://viacep.com.br/ws/${cep}/json/`;
-    alert(url);
-    fetch(url)
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                alert("Deu erro man");
-            }
-        })
+        function obterInformacoesCNPJ() {
+            const cnpj = document.querySelector(".cnpjSelecionado").value;
+            const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+            const url = `https://receitaws.com.br/v1/cnpj/${cnpj}`;
+            alert(url);
+            fetch(proxyUrl + url)
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        alert("Deu erro man");
+                    }
+                })
 
-        .then(data => {
-            console.log("Deu bom!");
-            alert(JSON.stringify(data));
-        })
+                .then(data => {
+                    console.log("Deu bom!");
+                    alert(JSON.stringify(data));
+                    mostrarInformacoesCNPJ(data);
+                })
 
-        .catch(error => {
-            console.error("Deu erro man!");
-        })
-}
+                .catch(error => {
+                    console.error("Deu erro man!");
+                })
+        }
+        function mostrarInformacoesCNPJ(data) {
+            const cnpjInfoDiv = document.getElementById('cnpjInfo');
+            cnpjInfoDiv.innerHTML = ''; // Limpa o conteúdo anterior, se houver
 
+            // Criar elementos HTML para exibir as informações do CNPJ
+            const cnpjInfoList = document.createElement('ul');
+            const fieldsToShow = ['nome', 'fantasia', 'logradouro', 'municipio', 'uf', 'telefone', 'email'];
+
+            fieldsToShow.forEach(field => {
+                if (data[field]) {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `${field}: ${data[field]}`;
+                    cnpjInfoList.appendChild(listItem);
+                }
+            });
+
+            cnpjInfoDiv.appendChild(cnpjInfoList);
+        } F
     </script>
 </body>
+
 </html>
